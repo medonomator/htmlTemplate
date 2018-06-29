@@ -1,0 +1,129 @@
+@import "fonts"
+@import "libs"
+@import "vars"
+
+*
+	-webkit-box-sizing: border-box
+	-moz-box-sizing: border-box
+	box-sizing: border-box
+	margin: 0
+	padding: 0
+	&:before, &:after
+		-webkit-box-sizing: border-box
+		-moz-box-sizing: border-box
+		box-sizing: border-box
+
+
+*::-webkit-input-placeholder
+	color: #666
+	opacity: 1
+
+*:-moz-placeholder
+	color: #666
+	opacity: 1
+
+*::-moz-placeholder
+	color: #666
+	opacity: 1
+
+*:-ms-input-placeholder
+	color: #666
+	opacity: 1
+
+body input:focus:required:invalid,
+body textarea:focus:required:invalid
+	color: #666
+body input:required:valid,
+body textarea:required:valid
+	color: #666
+
+body
+	font-size: 16px
+	min-width: 320px
+	position: relative
+	line-height: 1.65
+	font-family: $default-font
+	overflow-x: hidden
+	color: #222
+	font-weight: 400!important
+	font-family: 'PTSansCaption', sans-serif!important
+img
+	width: 100%
+li
+	list-style-type: none
+p
+	font-size: 18px
+hr
+	margin-bottom: 30px
+	color: #999
+
+.hover-color
+	color: $accent
+	transition: all .3s ease
+
+.img-responsive
+	display: block
+	max-width: 100%
+	height: auto
+
+.text-center
+	text-align: center
+
+::selection
+	background-color: $accent
+	color: #fff
+
+.wrapper 
+	margin-right: auto
+	margin-left: auto
+	max-width: 960px
+	position: relative
+.h2
+	text-transform: uppercase
+	text-align: center
+	margin: 40px 0
+
+.h3,.h3-low
+	font-size: 26px
+	padding-bottom: 5px
+	color: #666
+
+.h3-low
+	display: none
+	text-align: center
+	margin-bottom: 10px
+
+// hamburger
+.hamburger 
+	display: none
+	cursor: pointer
+
+.bar1, .bar2, .bar3 
+	width: 40px
+	height: 5px
+	background-color: $accent
+	margin: 3px 0
+	transition: 0.4s
+	border-radius: 5em
+	align-self: center
+
+.change .bar1 
+	-webkit-transform: rotate(-45deg) translate(-9px, 6px)
+	transform: rotate(-45deg) translate(-9px, 6px)
+
+.change .bar2 
+	opacity: 0
+
+.change .bar3 
+	-webkit-transform: rotate(45deg) translate(-8px, -8px)
+	transform: rotate(45deg) translate(-8px, -8px)
+
+
+// start here
+	
+// header
+.header
+	display: flex
+	justify-content: space-between
+
+@import "media" // Всегда в конце
