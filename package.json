@@ -1,12 +1,12 @@
 {
-  "name": "htmlTemplate",
-  "version": "1.0.0",
+  "name": "html_template",
+  "version": "1.0.1",
   "description": "html template",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "FamilyZorins",
+  "author": "medonomator",
   "license": "ISC",
   "devDependencies": {
     "browser-sync": "^2.24.4",
