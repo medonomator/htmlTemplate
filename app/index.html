@@ -2,7 +2,7 @@
 <html lang="ru">
   <head>
     <meta charset="UTF-8" />
-    <title>Салон Красоты</title>
+    <title>Шаблон для Верстки</title>
     <meta name="description" content="Салон Красоты" />
     <meta name="keywords" content="Your site's keywords should be here" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
@@ -24,12 +24,10 @@
     />
     <link
       rel="stylesheet"
-      href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,regular,italic,600,600italic,700,700italic,800,800italic&amp;subset=cyrillic,cyrillic-ext,greek,greek-ext,latin,latin-ext,vietnamese"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
     />
-    <link rel="stylesheet" href="css/reset.css" />
 
-    <link rel="stylesheet" href="./lib/slick/slick.css" />
-    <link rel="stylesheet" href="./lib/slick/slick-theme.css" />
+    <link rel="stylesheet" href="./libs/dist/assets/owl.carousel.min.css" />
 
     <link rel="stylesheet" href="css/main.min.css" />
   </head>
@@ -41,8 +39,29 @@
       <div class="bar3"></div>
     </div>
 
+    <!-- pop up -->
+    <div class="pop-up-window">
+      <div class="pop-up-wrapper">
+        <div class="pop-up-close">+</div>
+
+        <div class="stock pop-up">
+          <p class="insert-text-popup"></p>
+          <form action="">
+            <input class="stock-input" type="text" placeholder="Имя" required />
+            <input
+              class="stock-input"
+              type="phone"
+              placeholder="Телефон"
+              required
+            />
+            <button class="write-online-send">Записаться онлайн</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
     <script src="lib/jquery.min.js"></script>
-    <script src="lib/slick/slick.min.js"></script>
+    <script src="./libs/dist/owl.carousel.min.js"></script>
     <script src="js/common.js"></script>
   </body>
 </html>
