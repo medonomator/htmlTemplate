@@ -10,7 +10,15 @@ var gulp = require("gulp"),
   rename = require("gulp-rename"),
   autoprefixer = require("gulp-autoprefixer"),
   notify = require("gulp-notify"),
-  rsync = require("gulp-rsync");
+  rsync = require("gulp-rsync"),
+  imagemin = require("gulp-imagemin");
+
+gulp.task("imagemin", () =>
+  gulp
+    .src("app/img/**/*")
+    .pipe(imagemin())
+    .pipe(gulp.dest("dist/images"))
+);
 
 gulp.task("browser-sync", function() {
   browserSync({
