@@ -1,9 +1,8 @@
 var syntax = "sass"; // Syntax: sass or scss;
-
-var gulp = require("gulp"),
-  gutil = require("gulp-util"),
+const { src, dest, parallel, series, watch } = require("gulp");
+var gutil = require("gulp-util"),
   sass = require("gulp-sass"),
-  browserSync = require("browser-sync"),
+  browsersync = require("browser-sync"),
   concat = require("gulp-concat"),
   uglify = require("gulp-uglify"),
   cleancss = require("gulp-clean-css"),
@@ -11,72 +10,87 @@ var gulp = require("gulp"),
   autoprefixer = require("gulp-autoprefixer"),
   notify = require("gulp-notify"),
   rsync = require("gulp-rsync"),
-  imagemin = require("gulp-imagemin");
+  imagemin = require("gulp-imagemin"),
+  path = require("path"),
+  fs = require("fs");
 
-gulp.task("imagemin", () =>
-  gulp
-    .src("app/img/**/*")
-    .pipe(imagemin())
-    .pipe(gulp.dest("dist/images"))
-);
+/*
+ * Directories here
+ */
+var paths = {
+  build: "./build/",
+  sass: "./app/sass/",
+  data: "./app/data/",
+  js: "./app/js/",
+};
 
-gulp.task("browser-sync", function() {
-  browserSync({
-    server: {
-      baseDir: "app"
-    },
-    notify: false
-    // open: false,
-    // online: false, // Work Offline Without Internet Connection
-    // tunnel: true, tunnel: "projectname", // Demonstration page: http://projectname.localtunnel.me
-  });
-});
-
-gulp.task("styles", function() {
-  return gulp
-    .src("app/" + syntax + "/**/*." + syntax + "")
+function css() {
+  return src("app/" + syntax + "/**/*." + syntax + "")
     .pipe(sass({ outputStyle: "expand" }).on("error", notify.onError()))
     .pipe(rename({ suffix: ".min", prefix: "" }))
     .pipe(autoprefixer(["last 15 versions"]))
     .pipe(cleancss({ level: { 1: { specialComments: 0 } } })) // Opt., comment out when debugging
     .pipe(gulp.dest("app/css"))
     .pipe(browserSync.stream());
-});
+}
 
-gulp.task("js", function() {
-  return (
-    gulp
-      .src([
-        "app/js/common.js" // Always at the end
-      ])
-      .pipe(concat("scripts.min.js"))
-      // .pipe(uglify()) // Mifify js (opt.)
-      .pipe(gulp.dest("app/js"))
-      .pipe(browserSync.reload({ stream: true }))
-  );
-});
+// gulp.task("imagemin", () =>
+//   gulp.src("app/img/**/*").pipe(imagemin()).pipe(gulp.dest("dist/images"))
+// );
+// BrowserSync
+function browserSync() {
+  browsersync({
+    server: {
+      baseDir: paths.build,
+    },
+    notify: false,
+    browser: "google chrome",
+    // proxy: "0.0.0.0:5000"
+  });
+}
 
-gulp.task("rsync", function() {
-  return gulp.src("app/**").pipe(
-    rsync({
-      root: "app/",
-      hostname: "username@yousite.com",
-      destination: "yousite/public_html/",
-      // include: ['*.htaccess'], // Includes files to deploy
-      exclude: ["**/Thumbs.db", "**/*.DS_Store"], // Excludes files from deploy
-      recursive: true,
-      archive: true,
-      silent: false,
-      compress: true
-    })
-  );
-});
+// BrowserSync reload
+function browserReload() {
+  return browsersync.reload;
+}
 
-gulp.task("watch", ["styles", "js", "browser-sync"], function() {
-  gulp.watch("app/" + syntax + "/**/*." + syntax + "", ["styles"]);
-  gulp.watch(["libs/**/*.js", "app/js/common.js"], ["js"]);
-  gulp.watch("app/*.html", browserSync.reload);
-  gulp.watch("app/*.css", browserSync.reload);
-});
+// Watch files
+function watchFiles() {
+  // Watch SCSS changes
+  watch(paths.scss + "**/*.scss", parallel(css)).on("change", browserReload());
+  // Watch javascripts changes
+  // watch(paths.js + '*.js', parallel(js))
+  // .on('change', browserReload());
+  // // Watch template changes
+  // watch(['client/templates/**/*.twig','client/data/*.twig.json'], parallel(twigTpl))
+  // .on('change', browserReload());
+  // // Assets Watch and copy to build in some file changes
+  // watch('client/assets/**/*')
+  // .on('change', series(copyAssets, css, css_vendors, js, browserReload()));
+}
 
-gulp.task("default", ["watch"]);
+// gulp.task("js", function () {
+//   return (
+//     gulp
+//       .src([
+//         "app/js/common.js", // Always at the end
+//       ])
+//       .pipe(concat("scripts.min.js"))
+//       // .pipe(uglify()) // Mifify js (opt.)
+//       .pipe(gulp.dest("app/js"))
+//       .pipe(browserSync.reload({ stream: true }))
+//   );
+// });
+
+// gulp.task("watch", ["styles", "js", "browser-sync"], function () {
+//   gulp.watch("app/" + syntax + "/**/*." + syntax + "", ["styles"]);
+//   gulp.watch(["libs/**/*.js", "app/js/common.js"], ["js"]);
+//   gulp.watch("app/*.html", browserSync.reload);
+//   gulp.watch("app/*.css", browserSync.reload);
+// });
+
+const watching = parallel(watchFiles, browserSync);
+
+exports.css = css;
+exports.default = parallel(css);
+exports.watch = watching;
